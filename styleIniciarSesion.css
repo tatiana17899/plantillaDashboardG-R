@@ -1,0 +1,106 @@
+:root {
+  --fondo: #ffffff;
+  --color-principal: #096623;
+  --color-secundario: #70a680;
+  --color-verde1: #2ea950;
+  --color-turqueza: #00baa7;
+  --color-verde2: #00b489;
+  --first-color: hsl(82, 60%, 28%);
+  --title-color: hsl(0, 0%, 15%);
+  --text-color: hsl(0, 0%, 35%);
+  --body-color: hsl(0, 0%, 95%);
+  --container-color: hsl(0, 0%, 100%);
+}
+body {
+  background-color: var(--fondo);
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.background-text {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  opacity: 0.2;
+  z-index: 0;
+  text-align: right;
+}
+.form-container {
+  position: relative;
+  z-index: 1;
+}
+.form-control {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  background-color: transparent;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #38b2ac;
+  background-color: transparent;
+}
+.footer {
+  background-color: rgba(9, 102, 35, 0.58);
+  color: #ffffff;
+}
+.footer a {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+.footer .btn {
+  background-color: rgba(2, 130, 117, 0.48);
+  color: #ffffff;
+}
+.hero {
+  position: relative;
+  margin: 10px;
+  background-color: rgba(27, 102, 94, 0.5);
+  padding: 50px 20px;
+  height: 100vh;
+  border-radius: 30px;
+  transform: translate(-0.2%, -10%);
+  z-index: 0;
+  overflow: hidden;
+}
+
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--fondo);
+}
+
+.card-title {
+  margin-bottom: 40px;
+  margin-top: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #0e8930;
+}
+
+.btn-primary {
+  background-color: var(--color-principal);
+  border: none;
+  margin-top: 30px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.btn-primary:hover {
+  background-color: var(--first-color);
+}
