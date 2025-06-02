@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styleDashboard.css" />
+  </head>
+  <body>
+    <div class="d-flex flex-column">
+      <div
+        class="d-flex align-items-center p-3"
+        style="background-color: #c5dbcd"
+      >
+        <!-- Botón menú -->
+        <button
+          class="btn me-3 p-3"
+          id="toggle-btn"
+          style="border-radius: 50%; background-color: rgba(19, 155, 51, 0.2)"
+        >
+          <img
+            src="https://i.ibb.co/84XNccvZ/menu-5.png"
+            alt="menu-toggle"
+            width="25px"
+            height="25px"
+            border="0"
+          />
+        </button>
+        <span class="fs-3 fw-bold" style="color: #096623">G&R</span>
+        <!-- Área de notificaciones -->
+        <div class="ms-auto align-items-center d-flex">
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+            style="
+              border: solid 2px #fff;
+              border-radius: 20px;
+              width: 480px;
+              background: c5dbce;
+            "
+          >
+            <!-- Campana de notificaciones -->
+            <div
+              class="dropdown d-flex align-items-center ms-4 me-3"
+              style="
+                width: 50px;
+                height: 50px;
+                background-color: #f8f9fa;
+                border-radius: 50%;
+                justify-content: center;
+                position: relative;
+              "
+            >
+              <a
+                class="nav-link-noti dropdown-toggle p-0 d-flex align-items-center"
+                href="#"
+                id="navbarDropdownNotifications"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i
+                  class="fas fa-bell"
+                  style="color: #096623; font-size: 1.2rem"
+                ></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge"
+                  id="notificationCounter"
+                >
+                  0
+                </span>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-end notification-dropdown"
+                aria-labelledby="navbarDropdownNotifications"
+                style="min-width: 350px; padding: 0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom"
+                >
+                  <h6 class="mb-0">Notificaciones</h6>
+                  <div>
+                    <a
+                      href="#"
+                      id="markAllAsRead"
+                      class="btn btn-sm btn-success"
+                      style="text-decoration: none; font-size: 0.8rem"
+                    >
+                      Marcar todas
+                    </a>
+                    <a
+                      href="#"
+                      id="refreshNotifications"
+                      class="btn btn-sm btn-outline-secondary ms-2"
+                      style="text-decoration: none; font-size: 0.8rem"
+                    >
+                      <i class="fas fa-sync-alt"></i>
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="notification-list"
+                  id="notificationList"
+                  style="max-height: 400px; overflow-y: auto"
+                >
+                  <div class="text-center py-3">
+                    <div
+                      class="spinner-border text-success spinner-border-sm"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <span class="ms-2">Cargando notificaciones...</span>
+                  </div>
+                </div>
+                <div class="text-center py-2 border-top">
+                  <a href="#" class="text-success" id="viewAllNotifications"
+                    >Ver todas</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Información de usuario -->
+            <div class="d-flex flex-column flex-grow-1">
+              <div
+                class="fw-bold fs-5 text-star text-success"
+                style="
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                Tatiana Mercedes Suarez Rosas
+              </div>
+              <div
+                class="text-star fw-normal fs-6"
+                style="
+                  color: rgba(4, 85, 27, 0.52);
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                tatianasuarezrosas332@gmail.com
+              </div>
+            </div>
+
+            <!-- Foto de perfil -->
+            <div
+              class="ms-3 me-4 d-flex align-items-center"
+              id="profileContainer"
+            >
+              <img
+                src="https://storage.googleapis.com/a1aa/image/-oruAM08FFeceuN2Y-t0_Zr19mVSEAYYH-Ngt_-6MNs.jpg"
+                alt="img-perfil"
+                width="60px"
+                height="60px"
+                style="border-radius: 50%"
+                id="profileImageBtn"
+              />
+            </div>
+          </div>
+          <div class="overlay" id="overlay"></div>
+          <!-- Panel lateral del perfil -->
+          <div class="profile-slideout" id="profilePanel">
+            <button class="close-btn" id="closeProfile">&times;</button>
+            <div class="profile-content">
+              <div class="w-100 max-w-sm mx-auto">
+                <div
+                  class="d-flex align-items-center justify-content-between p-4"
+                >
+                  <h1 class="text-gray-500 h5 font-semibold">PERFIL</h1>
+                  <div></div>
+                </div>
+                <div class="d-flex flex-column align-items-center mt-4">
+                  <div class="position-relative">
+                    <img
+                      id="profileImage"
+                      src="https://placehold.co/150x150"
+                      alt="Pixel art of a mole wearing a top hat and smoking a pipe"
+                      class="profile-img rounded-circle"
+                    />
+                    <input
+                      type="file"
+                      id="imageUpload"
+                      accept="image/*"
+                      style="display: none"
+                      onchange="loadFile(event)"
+                    />
+                    <button
+                      class="camera-btn"
+                      onclick="document.getElementById('imageUpload').click();"
+                    >
+                      <i class="fas fa-camera"></i>
+                    </button>
+                  </div>
+                  <div class="mt-4 w-100 px-4">
+                    <input
+                      type="text"
+                      class="form-control text-center text-gray-500 mb-3"
+                      readonly
+                      value="Tatiana Mercedes Suarez Rosas"
+                    />
+                    <input
+                      type="email"
+                      class="form-control text-center text-gray-400"
+                      readonly
+                      value="tatianasuarezrosas332@gmail.com"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row">
+        <!-- Sidebar -->
+        <div class="p-3" style="display: flex; flex-direction: column">
+          <nav class="nav flex-column sidebar" id="sidebar">
+            <a
+              class="nav-link active"
+              href="#"
+              style="margin-top: 50px; margin-left: 30px; margin-right: 30px"
+            >
+              <i class="fas fa-home me-2"></i>
+              Inicio
+            </a>
+            <a
+              class="nav-link"
+              href="Pedidos.html"
+              id="pedidos-toggle"
+              style="margin: 20px 30px 0px 30px; color: #096623"
+            >
+              <i class="fas fa-box me-2" style="color: #096623"></i> Pedidos
+              <!--<i class="fas fa-chevron-down ms-2"></i>-->
+            </a>
+            <!--
+            <div
+              class="submenu"
+              id="submenu-pedidos"
+              style="
+                background-color: rgba(9, 102, 35, 0.23);
+                border-radius: 20px;
+                width: 150px;
+                margin-left: 80px;
+                margin-top: 20px;
+              "
+            >
+              <a class="nav-link" href="#" style="margin-left: 10px">Línea</a>
+              <a class="nav-link" href="#" style="margin-left: 10px"
+                >Presencial</a
+              >
+            </div>-->
+            <a
+              class="nav-link"
+              href="EstadoContable.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i
+                class="fas fa-file-invoice-dollar me-2"
+                style="color: #096623"
+              ></i>
+              Estado Contable
+            </a>
+            <a
+              class="nav-link"
+              href="Cliente.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-users me-2" style="color: #096623"></i>
+              Clientes
+            </a>
+            <a
+              class="nav-link"
+              href="Mensajes.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-envelope me-2" style="color: #096623"></i>
+              Mensajes
+            </a>
+            <a
+              class="nav-link"
+              href="Productos.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-box-open me-2" style="color: #096623"></i>
+              Productos
+            </a>
+            <a
+              class="nav-link"
+              href="Reclamos.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-book me-2" style="color: #096623"></i>
+              Libro Reclamaciones
+            </a>
+          </nav>
+          <div class="sidebar-footer" id="sidebar-1">
+            <a
+              class="nav-link"
+              href="#"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-sign-out-alt me-2" style="color: #096623"></i>
+              Cerrar Sesión
+            </a>
+            <p
+              class="text-muted small mt-4"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              © 2024 GRINPLAS S.R.L. Todos los derechos reservados.
+            </p>
+          </div>
+        </div>
+        <!-- Main Content -->
+        <div class="content" id="content">
+          <div class="container-fluid p-3">
+            <!-- Aquí sigue el contenido principal -->
+            <div class="container py-4">
+              <div class="d-flex align-items-center mb-4">
+                <span class="me-2">Inicio</span>
+                <span
+                  class="text-dashboard"
+                  style="color: #09c33d; font-weight: bold"
+                  >/Dashboard</span
+                >
+              </div>
+              <div class="d-flex">
+                <h1
+                  class="display-4 mb-3"
+                  style="font-weight: 400; font-size: 40px"
+                >
+                  Análisis de Ventas
+                </h1>
+                <div class="d-flex justify-content-end ms-auto">
+                  <div class="d-flex align-items-center me-5">
+                    <div class="icon-container me-3">
+                      <i class="fas fa-shopping-bag icon"></i>
+                    </div>
+                    <div>
+                      <p class="mb-1">Ventas de bolsas</p>
+                      <p class="h3 fw-bold mb-0">
+                        40
+                        <span class="fs-6" style="color: #86a792">ventas</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="icon-container me-3">
+                      <i class="fas fa-shopping-basket icon"></i>
+                    </div>
+                    <div>
+                      <p class="mb-1">Ventas de mangas</p>
+                      <p class="h3 fw-bold mb-0">
+                        20
+                        <span class="fs-6" style="color: #86a792">ventas</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container py-4">
+            <div class="d-flex mb-4">
+              <button class="btn btn-outline-secondary rounded-pill me-2">
+                Semana
+              </button>
+              <button class="btn btn-outline-success rounded-pill me-2">
+                Mes
+              </button>
+              <button class="btn btn-outline-secondary rounded-pill me-2">
+                Año
+              </button>
+              <input
+                type="date"
+                class="btn btn-outline-secondary rounded-pill"
+              />
+            </div>
+            <div class="d-flex">
+              <div
+                class="d-flex flex-column p-3"
+                style="
+                  background-color: rgba(114, 220, 0, 0.29);
+                  border-bottom-left-radius: 50px;
+                "
+              >
+                <div
+                  class="p-2 rounded mb-4 text-center"
+                  style="
+                    background-color: rgba(9, 102, 35, 0.83);
+                    width: 150px;
+                    height: 50px;
+                    z-index: 1;
+                    transform: translate(-10px, -10px);
+                  "
+                >
+                  <i
+                    class="fas fa-chart-bar text-white"
+                    style="font-size: 30px"
+                  ></i>
+                </div>
+                <div
+                  class="d-flex flex-column align-items-center text-center"
+                  style="
+                    background-color: #e7ffe3;
+                    border-radius: 30px;
+                    padding: 10px;
+                  "
+                >
+                  <div class="text-center mb-4">
+                    <span style="color: rgba(9, 102, 35, 0.6)">Selecciona</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mb-4">
+                    <i
+                      class="fas fa-shopping-bag text-dark-green fa-2x mb-2"
+                    ></i>
+                    <span class="text-dark-green">Bolsas</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mb-4">
+                    <i
+                      class="fas fa-shopping-basket text-dark-green fa-2x mb-2"
+                    ></i>
+                    <span class="text-dark-green">Mangas</span>
+                  </div>
+                  <button
+                    class="btn btn-success rounded-pill"
+                    style="margin-bottom: 20px"
+                  >
+                    Todos
+                  </button>
+                </div>
+              </div>
+              <div
+                class="flex-grow-1 p-3"
+                style="background-color: rgba(114, 220, 0, 0.29); width: 300px"
+              >
+                <div
+                  class="bg-white p-5 h-100 d-flex align-items-center justify-content-center"
+                  style="border-radius: 20px"
+                >
+                  <span class="text-secondary"
+                    >Gráfico cantidad y monto de pedidos</span
+                  >
+                </div>
+              </div>
+              <div class="chart-buttons-container">
+                <button
+                  class="chart-button"
+                  id="bar-chart-btn"
+                  title="Gráfico de Barras"
+                >
+                  <i class="fas fa-chart-bar"></i>
+                </button>
+                <button
+                  class="chart-button"
+                  id="line-chart-btn"
+                  title="Gráfico de Líneas"
+                >
+                  <i class="fas fa-chart-line"></i>
+                </button>
+                <button
+                  class="chart-button"
+                  id="pie-chart-btn"
+                  title="Gráfico Circular"
+                >
+                  <i class="fas fa-chart-pie"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <h3 class="mb-4"># Ventas Tipos de Bolsas</h3>
+            <div class="row g-4" style="margin-left: 20px; margin-bottom: 20px">
+              <div
+                class="p-3 bg-white"
+                style="
+                  width: 33rem;
+                  border: rgba(9, 102, 35, 0.37) solid 2px;
+                  border-radius: 20px;
+                "
+              >
+                <div
+                  class="bg-success bg-opacity-10 rounded-lg p-3"
+                  style="border-radius: 20px"
+                >
+                  <div class="date-picker-container">
+                    <div class="d-flex align-items-center mb-3">
+                      <div
+                        class="bg-success text-white p-2"
+                        style="border-radius: 10px; width: 70px"
+                      >
+                        <i
+                          class="fas fa-calendar-alt"
+                          style="margin-left: 20px"
+                        ></i>
+                      </div>
+                      <span
+                        class="ml-2 text-secondary fecha-seleccionada"
+                        style="margin-left: 20px"
+                        >dd/mm/aa</span
+                      >
+                    </div>
+
+                    <div class="calendar-popup">
+                      <div class="calendar-header">
+                        <button class="btn btn-sm" id="prev-month">
+                          <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="month-year" id="month-year"
+                          >Marzo 2025</span
+                        >
+                        <button class="btn btn-sm" id="next-month">
+                          <i class="fas fa-chevron-right"></i>
+                        </button>
+                      </div>
+
+                      <div class="calendar-days" id="calendar-days">
+                        <!-- Los días se llenarán con JavaScript -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Gráfico -->
+                  <div
+                    class="d-flex justify-content-center"
+                    style="height: 300px"
+                  >
+                    <canvas id="pieChart"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-3">
+                  <div
+                    class="bg-success text-white p-3 rounded flex-fill d-flex align-items-center justify-content-between"
+                  >
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-users fa-2x"></i>
+                      <span class="ms-2">Cantidad de clientes suscritos</span>
+                    </div>
+                    <br />
+                    <span class="h4 mb-0">120</span>
+                  </div>
+                  <div
+                    class="bg-success-subtle text-dark p-3 rounded flex-fill d-flex align-items-center justify-content-between"
+                  >
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-hand-holding-usd fa-2x"></i>
+                      <span class="ms-2">Ganancia Actual</span>
+                    </div>
+                    <br />
+                    <span class="h4 mb-0">S/9000</span>
+                  </div>
+                </div>
+                <div
+                  class="p-3 bg-white"
+                  style="
+                    width: 33rem;
+                    border: rgba(9, 102, 35, 0.37) solid 2px;
+                    border-radius: 20px;
+                    margin-top: 20px;
+                  "
+                >
+                  <div
+                    class="bg-success bg-opacity-10 rounded-lg p-3"
+                    style="border-radius: 20px"
+                  >
+                    <div class="date-picker-container">
+                      <div class="d-flex align-items-center mb-3">
+                        <div
+                          class="bg-success text-white p-2"
+                          style="border-radius: 10px; width: 70px"
+                        >
+                          <i
+                            class="fas fa-calendar-alt"
+                            style="margin-left: 20px"
+                          ></i>
+                        </div>
+                        <span
+                          class="ml-2 text-secondary fecha-seleccionada"
+                          style="margin-left: 20px"
+                          >dd/mm/aa</span
+                        >
+                      </div>
+
+                      <div class="calendar-popup">
+                        <div class="calendar-header">
+                          <button class="btn btn-sm" id="prev-month1">
+                            <i class="fas fa-chevron-left"></i>
+                          </button>
+                          <span class="month-year" id="month-year1"
+                            >Marzo 2025</span
+                          >
+                          <button class="btn btn-sm" id="next-month1">
+                            <i class="fas fa-chevron-right"></i>
+                          </button>
+                        </div>
+
+                        <div class="calendar-days" id="calendar-days1">
+                          <!-- Los días se llenarán con JavaScript -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Gráfico -->
+                    <div class="d-flex justify-content-center">
+                      <!-- Gráfico -->
+                      <canvas id="barChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="grafico.js"></script>
+    <script src="calendario.js"></script>
+    <script src="perfil.js"></script>
+  </body>
+</html>

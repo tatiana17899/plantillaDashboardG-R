@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Estado Contable</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="styleDashboard.css" />
+    <link rel="stylesheet" href="styleEstadoContable.css" />
+  </head>
+  <body>
+    <div class="d-flex flex-column">
+      <div
+        class="d-flex align-items-center p-3"
+        style="background-color: #c5dbcd"
+      >
+        <!-- Botón menú -->
+        <button
+          class="btn me-3 p-3"
+          id="toggle-btn"
+          style="border-radius: 50%; background-color: rgba(19, 155, 51, 0.2)"
+        >
+          <img
+            src="https://i.ibb.co/84XNccvZ/menu-5.png"
+            alt="menu-toggle"
+            width="25px"
+            height="25px"
+            border="0"
+          />
+        </button>
+        <span class="fs-3 fw-bold" style="color: #096623">G&R</span>
+        <!-- Área de notificaciones -->
+        <div class="ms-auto align-items-center d-flex">
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+            style="
+              border: solid 2px #fff;
+              border-radius: 20px;
+              width: 480px;
+              background: c5dbce;
+            "
+          >
+            <!-- Campana de notificaciones -->
+            <div
+              class="dropdown d-flex align-items-center ms-4 me-3"
+              style="
+                width: 50px;
+                height: 50px;
+                background-color: #f8f9fa;
+                border-radius: 50%;
+                justify-content: center;
+                position: relative;
+              "
+            >
+              <a
+                class="nav-link-noti dropdown-toggle p-0 d-flex align-items-center"
+                href="#"
+                id="navbarDropdownNotifications"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i
+                  class="fas fa-bell"
+                  style="color: #096623; font-size: 1.2rem"
+                ></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge"
+                  id="notificationCounter"
+                >
+                  0
+                </span>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-end notification-dropdown"
+                aria-labelledby="navbarDropdownNotifications"
+                style="min-width: 350px; padding: 0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom"
+                >
+                  <h6 class="mb-0">Notificaciones</h6>
+                  <div>
+                    <a
+                      href="#"
+                      id="markAllAsRead"
+                      class="btn btn-sm btn-success"
+                      style="text-decoration: none; font-size: 0.8rem"
+                    >
+                      Marcar todas
+                    </a>
+                    <a
+                      href="#"
+                      id="refreshNotifications"
+                      class="btn btn-sm btn-outline-secondary ms-2"
+                      style="text-decoration: none; font-size: 0.8rem"
+                    >
+                      <i class="fas fa-sync-alt"></i>
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="notification-list"
+                  id="notificationList"
+                  style="max-height: 400px; overflow-y: auto"
+                >
+                  <div class="text-center py-3">
+                    <div
+                      class="spinner-border text-success spinner-border-sm"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <span class="ms-2">Cargando notificaciones...</span>
+                  </div>
+                </div>
+                <div class="text-center py-2 border-top">
+                  <a href="#" class="text-success" id="viewAllNotifications"
+                    >Ver todas</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Información de usuario -->
+            <div class="d-flex flex-column flex-grow-1">
+              <div
+                class="fw-bold fs-5 text-star text-success"
+                style="
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                Tatiana Mercedes Suarez Rosas
+              </div>
+              <div
+                class="text-star fw-normal fs-6"
+                style="
+                  color: rgba(4, 85, 27, 0.52);
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                tatianasuarezrosas332@gmail.com
+              </div>
+            </div>
+
+            <!-- Foto de perfil -->
+            <div
+              class="ms-3 me-4 d-flex align-items-center"
+              id="profileContainer"
+            >
+              <img
+                src="https://storage.googleapis.com/a1aa/image/-oruAM08FFeceuN2Y-t0_Zr19mVSEAYYH-Ngt_-6MNs.jpg"
+                alt="img-perfil"
+                width="60px"
+                height="60px"
+                style="border-radius: 50%"
+                id="profileImageBtn"
+              />
+            </div>
+          </div>
+          <div class="overlay" id="overlay"></div>
+          <!-- Panel lateral del perfil -->
+          <div class="profile-slideout" id="profilePanel">
+            <button class="close-btn" id="closeProfile">&times;</button>
+            <div class="profile-content">
+              <div class="w-100 max-w-sm mx-auto">
+                <div
+                  class="d-flex align-items-center justify-content-between p-4"
+                >
+                  <h1 class="text-gray-500 h5 font-semibold">PERFIL</h1>
+                  <div></div>
+                </div>
+                <div class="d-flex flex-column align-items-center mt-4">
+                  <div class="position-relative">
+                    <img
+                      id="profileImage"
+                      src="https://placehold.co/150x150"
+                      alt="Pixel art of a mole wearing a top hat and smoking a pipe"
+                      class="profile-img rounded-circle"
+                    />
+                    <input
+                      type="file"
+                      id="imageUpload"
+                      accept="image/*"
+                      style="display: none"
+                      onchange="loadFile(event)"
+                    />
+                    <button
+                      class="camera-btn"
+                      onclick="document.getElementById('imageUpload').click();"
+                    >
+                      <i class="fas fa-camera"></i>
+                    </button>
+                  </div>
+                  <div class="mt-4 w-100 px-4">
+                    <input
+                      type="text"
+                      class="form-control text-center text-gray-500 mb-3"
+                      readonly
+                      value="Tatiana Mercedes Suarez Rosas"
+                    />
+                    <input
+                      type="email"
+                      class="form-control text-center text-gray-400"
+                      readonly
+                      value="tatianasuarezrosas332@gmail.com"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row">
+        <!-- Sidebar -->
+        <div class="p-3" style="display: flex; flex-direction: column">
+          <nav class="nav flex-column sidebar" id="sidebar">
+            <a
+              class="nav-link active"
+              href="Dashboard.html"
+              style="margin-top: 50px; margin-left: 30px; margin-right: 30px"
+            >
+              <i class="fas fa-home me-2"></i>
+              Inicio
+            </a>
+            <a
+              class="nav-link"
+              href="Pedidos.html"
+              id="pedidos-toggle"
+              style="margin: 20px 30px 0px 30px; color: #096623"
+            >
+              <i class="fas fa-box me-2" style="color: #096623"></i> Pedidos
+              <!--<i class="fas fa-chevron-down ms-2"></i>-->
+            </a>
+            <!--
+            <div
+              class="submenu"
+              id="submenu-pedidos"
+              style="
+                background-color: rgba(9, 102, 35, 0.23);
+                border-radius: 20px;
+                width: 150px;
+                margin-left: 80px;
+                margin-top: 20px;
+              "
+            >
+              <a class="nav-link" href="#" style="margin-left: 10px">Línea</a>
+              <a class="nav-link" href="#" style="margin-left: 10px"
+                >Presencial</a
+              >
+            </div>-->
+            <a
+              class="nav-link"
+              href="#"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i
+                class="fas fa-file-invoice-dollar me-2"
+                style="color: #096623"
+              ></i>
+              Estado Contable
+            </a>
+            <a
+              class="nav-link"
+              href="Cliente.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-users me-2" style="color: #096623"></i>
+              Clientes
+            </a>
+            <a
+              class="nav-link"
+              href="Mensajes.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-envelope me-2" style="color: #096623"></i>
+              Mensajes
+            </a>
+            <a
+              class="nav-link"
+              href="Productos.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-box-open me-2" style="color: #096623"></i>
+              Productos
+            </a>
+            <a
+              class="nav-link"
+              href="Reclamos.html"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-book me-2" style="color: #096623"></i>
+              Libro Reclamaciones
+            </a>
+          </nav>
+          <div class="sidebar-footer" id="sidebar-1">
+            <a
+              class="nav-link"
+              href="#"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              <i class="fas fa-sign-out-alt me-2" style="color: #096623"></i>
+              Cerrar Sesión
+            </a>
+            <p
+              class="text-muted small mt-4"
+              style="margin-left: 30px; margin-right: 30px; color: #096623"
+            >
+              © 2024 GRINPLAS S.R.L. Todos los derechos reservados.
+            </p>
+          </div>
+        </div>
+        <!-- Main Content -->
+        <div class="content" id="content">
+          <div class="container" style="padding: 40px; margin: 10px">
+            <div class="text-sm mb-4">
+              <a class="text-secondary" href="#" style="text-decoration: none">
+                Inicio
+              </a>
+              /
+              <a href="#" style="text-decoration: none; color: #09c33d">
+                Estado Contable
+              </a>
+            </div>
+            <h1 class="h3 font-weight-bold mb-4">Control de Gastos</h1>
+            <div class="row mb-6">
+              <div class="col-md-8">
+                <div class="card mb-4 bg-light-green">
+                  <div class="card-body">
+                    <h2
+                      class="card-title text-center font-weight-bold text-green"
+                      style="font-size: 1.25rem"
+                    >
+                      Informe
+                    </h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col text-center">
+                    <div class="card bg-darker-green mb-2">
+                      <div class="card-body">
+                        <h3
+                          class="font-weight-bold text-green"
+                          style="font-size: 1rem"
+                        >
+                          Total Ingresos
+                        </h3>
+                      </div>
+                    </div>
+                    <p class="h4">S/30, 000</p>
+                  </div>
+                  <div class="col text-center">
+                    <div class="card bg-darker-green mb-2">
+                      <div class="card-body">
+                        <h3
+                          class="font-weight-bold text-green"
+                          style="font-size: 1rem"
+                        >
+                          Total Gastos
+                        </h3>
+                      </div>
+                    </div>
+                    <p class="h4">S/9, 000</p>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#createExpenseModal"
+                  style="margin-top: 20px"
+                >
+                  Crear Nuevo Gasto
+                </button>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex justify-content-between mb-4">
+                  <div class="input-group border-green">
+                    <input
+                      class="form-control border border-green"
+                      type="date"
+                    />
+                  </div>
+                  <span class="mx-2 align-self-center"> a </span>
+                  <div class="input-group border-green">
+                    <input
+                      class="form-control border border-green"
+                      type="date"
+                    />
+                  </div>
+                </div>
+                <div class="card-custom">
+                  <div class="inner-card">
+                    <h2
+                      class="card-title font-weight-bold mb-4 text-green"
+                      style="font-size: 1.25rem"
+                    >
+                      Ingresos y Gastos
+                    </h2>
+
+                    <!-- Contenedor del gráfico -->
+                    <div class="chart-container-js">
+                      <canvas
+                        id="incomeExpenseChart"
+                        style="position: relative; height: 150px; width: 100%"
+                      ></canvas>
+                    </div>
+
+                    <!-- Leyenda del gráfico -->
+                    <div
+                      class="chart-legend mt-3 d-flex justify-content-center"
+                    >
+                      <div class="legend-item mr-4">
+                        <span
+                          class="legend-color"
+                          style="
+                            background-color: rgba(9, 102, 35, 1);
+                            display: inline-block;
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                          "
+                        ></span>
+                        <span class="legend-text ml-2">Ingresos</span>
+                      </div>
+                      <div class="legend-item">
+                        <span
+                          class="legend-color"
+                          style="
+                            background-color: rgba(9, 102, 35, 0.12);
+                            display: inline-block;
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                          "
+                        ></span>
+                        <span class="legend-text ml-2">Gastos</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive" style="margin-top: 20px">
+              <table class="table table-bordered" id="expensesTable">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Concepto</th>
+                    <th>Valor</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/100.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/80.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>7/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/180.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>8/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/40.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>10/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/50.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>12/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/60.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>14/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/70.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>16/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/80.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>18/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/90.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>20/01/2025</td>
+                    <td>Descripción del gasto o si es ingreso realizado</td>
+                    <td>S/100.00</td>
+                    <td>
+                      <i
+                        class="fas fa-edit text-success cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExpenseModal"
+                      ></i>
+                      <i
+                        class="fas fa-trash-alt text-success cursor-pointer ml-2"
+                        onclick="confirmarEliminacion()"
+                      >
+                      </i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="createExpenseModal"
+      tabindex="-1"
+      aria-labelledby="createExpenseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="createExpenseModalLabel"
+              style="color: #096623"
+            >
+              Crear nuevo Gasto
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="concepto" style="color: #096623">Concepto</label>
+                <input type="text" class="form-control" id="concepto" />
+              </div>
+              <div class="form-group">
+                <label for="valor" style="color: #096623">Valor</label>
+                <input type="number" class="form-control" id="valor" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-success">
+              Generar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de Edición -->
+    <div
+      class="modal fade"
+      id="editExpenseModal"
+      tabindex="-1"
+      aria-labelledby="editExpenseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="editExpenseModalLabel"
+              style="color: #096623"
+            >
+              Editar Gasto
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="editConcepto" style="color: #096623"
+                  >Concepto</label
+                >
+                <input type="text" class="form-control" id="editConcepto" />
+              </div>
+              <div class="form-group">
+                <label for="editValor" style="color: #096623">Valor</label>
+                <input type="number" class="form-control" id="editValor" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-success">
+              Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="graficogastos.js"></script>
+    <script src="perfil.js"></script>
+    <script src="estadoContable.js"></script>
+    <script src="eliminar.js"></script>
+  </body>
+</html>

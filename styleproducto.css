@@ -1,0 +1,28 @@
+.custom-bg {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.custom-btn {
+  background-color: #096623;
+  color: white;
+}
+.table tbody tr {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  display: block;
+}
+.table tbody {
+  display: block;
+}
+.table thead,
+.table tbody tr {
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
+.btn-custom {
+  color: #096623;
+}
+.text-custom {
+  color: #096623;
+}
